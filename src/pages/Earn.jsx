@@ -101,11 +101,12 @@ function Earn(props) {
     return(
         <>
             <Stack alignItems={'center'} direction={'column'} margin={3}>
-            <Typography sx={{color:'white'}} level='h1'>Click Here to Start Making the Big Bucks</Typography>
+            <Typography margin={3} sx={{color:'white'}} level='h1'>Click Here to Start Making the Big Bucks</Typography>
             <Button color='success' onClick={()=>props.setBucks(props.bucks + income)}><FontAwesomeIcon style={{fontSize: '100px', padding: '10px'}} icon={faMoneyBillTrendUp}/></Button>
+            <Typography sx={{color:'white'}}>You&apos;re Earning {income} bucks per click</Typography>
             </Stack>
             <Stack alignItems={'center'} textAlign={'center'} direction={'column'} margin={5}>
-                <Typography level='h1' sx={{color:'white'}}>Buy Items</Typography>
+                <Typography margin={3} level='h1' sx={{color:'white'}}>Buy Items</Typography>
                 <ButtonGroup orientation='vertical'>
                     {availableItems.map((item, index) => {
                         return <Button sx={{backgroundColor:'white'}} onClick={()=>buy(item, index)} key={index}>{item.name}, Bucks/Click:{item.profit}, Cost: {item.cost}</Button>
