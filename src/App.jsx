@@ -1,32 +1,54 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Button, Navbar, Container, Nav} from 'react-bootstrap'
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Stack } from '@mui/joy';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Home from './pages/Home'
+import Earn from './pages/Earn'
+import Play from './pages/Play';
 
-function App() {
-  const [count, setCount] = useState(0)
 
+const App = () => {
+
+  const [bucks, setBucks] = useState(() => {
+    const savedBucks = localStorage.getItem('bucks');
+    return savedBucks ? parseInt(savedBucks, 10) : 0;
+  });
+
+  // Save the bucks value to local storage when it changes
+  useEffect(() => {
+    localStorage.setItem('bucks', bucks.toString());
+  }, [bucks]);
+
+  
   return (
-    <>
+    <Router>
+      <Stack>
+        <Navbar className='bg-dark'>
+          <Container>
+            <Navbar.Brand className='text-white'>Boredom Casino</Navbar.Brand>
+            <Navbar.Collapse>
+              <Nav className='me-auto'>
+                <Nav.Link><Link to={'/'}><Button className='btn-secondary'>Home</Button></Link></Nav.Link>
+                <Nav.Link><Link to={'/earn'}><Button className='btn-secondary'>Earn</Button></Link></Nav.Link>
+                <Nav.Link><Link to={'/play'}><Button className='btn-secondary'>Play</Button></Link></Nav.Link>                
+              </Nav>
+            </Navbar.Collapse>
+            <Navbar.Collapse className='justify-content-end'>
+                <Navbar.Text className='text-white'>Balance: {bucks}</Navbar.Text>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Routes>
+          <Route path="/" index element={<Home bucks={bucks}/>} />
+          <Route path="/earn" element={<Earn bucks={bucks} setBucks={setBucks}/>} />
+          <Route path="/play" element={<Play bucks={bucks} setBucks={setBucks}/>}/>
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      </Stack>
+    </Router>
+  );
+};
 
-export default App
+export default App;
